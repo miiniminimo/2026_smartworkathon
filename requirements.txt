@@ -1,5 +1,0 @@
-openai
-streamlit
-pymupdf
-pypdf
-pillow

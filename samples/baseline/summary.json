@@ -1,0 +1,58 @@
+[
+ {
+  "i": 1,
+  "gen_s": 56.2,
+  "passed": 14,
+  "total": 17,
+  "cond_fail": 1,
+  "numbers": 0,
+  "ad_notice": false,
+  "failed": [
+   "M7",
+   "M8",
+   "M9"
+  ],
+  "cond_detail": [
+   "조건 없이 쓴 문단 1개: 티링크 비즈레코딩의 방향은 녹음 파일을 많이 쌓는 데서 그치지 않습니다. 휴대폰·인터넷전화·PC폰에서 발생한"
+  ],
+  "number_detail": [],
+  "note": "조건 검사는 trigger 확장 후 코드로 재채점(API 미사용)"
+ },
+ {
+  "i": 2,
+  "gen_s": 53.3,
+  "passed": 15,
+  "total": 17,
+  "cond_fail": 1,
+  "numbers": 0,
+  "ad_notice": false,
+  "failed": [
+   "M8",
+   "M9"
+  ],
+  "cond_detail": [
+   "조건 없이 쓴 문단 1개: 휴대폰·인터넷전화·PC폰 통화를 한곳에 모으고, STT 문자변환과 AI 통화요약을 거쳐 고객 이력과 종합 리"
+  ],
+  "number_detail": [],
+  "note": "조건 검사는 trigger 확장 후 코드로 재채점(API 미사용)"
+ },
+ {
+  "i": 3,
+  "gen_s": 55.1,
+  "passed": 14,
+  "total": 17,
+  "cond_fail": 1,
+  "numbers": 0,
+  "ad_notice": false,
+  "failed": [
+   "M7",
+   "M8",
+   "M9"
+  ],
+  "cond_detail": [
+   "조건 없이 쓴 문단 1개: 외근 중에는 휴대폰으로 고객과 상담하고, 사무실에서는 인터넷전화로 응대하고, 집에서 업무를 볼 때는 PC폰으"
+  ],
+  "number_detail": [],
+  "note": "조건 검사는 trigger 확장 후 코드로 재채점(API 미사용)"
+ }
+]

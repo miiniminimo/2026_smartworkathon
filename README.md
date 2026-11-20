@@ -2,6 +2,12 @@
 
 교육기관 현장 사진과 메모로 네이버 블로그 원고를 쓰고, 검토한 글과 사진을 지정한 블로그의 SmartEditor ONE으로 전달하는 로컬 앱입니다. 같은 사례의 설치 카드와 문자 초안도 함께 준비합니다.
 
+## 발표 자료
+
+[![케이스 메이커 CaseMaker — 스마트워크톤 2026 발표 자료 표지](docs/presentation-cover.png)](docs/smartworkathon-2026-presentation.pdf)
+
+스마트워크톤 2026 발표 자료(PDF, 9쪽): [발표 자료 열기](docs/smartworkathon-2026-presentation.pdf)
+
 ## 시작하기
 
 Node.js 22 이상이 필요합니다. 내장 네이버 MCP를 사용하려면 창을 열 수 있는 데스크톱 환경과 Google Chrome도 준비하세요.

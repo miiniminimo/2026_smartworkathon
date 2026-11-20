@@ -1,0 +1,5 @@
+{
+  "cta": { "text": "", "confirmed": false },
+  "sms_ad": { "text": "", "confirmed": false },
+  "sms_opt_out": { "text": "", "confirmed": false }
+}

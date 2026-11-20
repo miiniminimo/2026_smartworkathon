@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1b1930">
+  <meta name="description" content="설치 현장 자료로 블로그 원고를 편집하고 승인한 글을 네이버에 전달하는 티링크 발행 스튜디오">
+  <title>티링크 블로그 발행 스튜디오</title>
+  <link rel="icon" href="/mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <header class="masthead">
+    <div class="shell masthead-inner">
+      <div class="branding"><img src="/mark.svg" alt="" width="33" height="33"><span class="wordmark" lang="en">T:LINK</span><span class="brand-divider"></span><span class="brand-name">콘텐츠 스튜디오</span></div>
+      <nav class="masthead-actions" aria-label="스튜디오 도구">
+        <button class="guide-button" id="guide-button" type="button" aria-label="이용 안내"><i data-icon="help"></i><span>이용 안내</span></button>
+        <button class="connection-button" id="open-connections" type="button"><i data-icon="plug"></i>연결 설정<span class="connection-indicator" id="connection-status">연결 확인</span></button>
+      </nav>
+    </div>
+  </header>
+  <main class="shell">
+    <section class="intro" aria-labelledby="page-title">
+      <div><h1 id="page-title">블로그 발행 스튜디오</h1><p>현장 자료를 원고로 다듬고, 검토한 글을 네이버 블로그에 발행하세요.</p></div>
+      <ol class="steps" aria-label="작업 진행 단계">
+        <li aria-current="step"><a href="#input-title"><span>1</span>현장 입력</a></li><li><a href="#output-title"><span>2</span>원고 편집</a></li><li><a href="#review-title"><span>3</span>검토·발행</a></li>
+      </ol>
+    </section>
+    <div class="workspace">
+      <section class="panel input-panel" aria-labelledby="input-title">
+        <header class="panel-head"><div class="head-icon"><i data-icon="sliders"></i></div><h2 id="input-title">현장 브리프</h2></header>
+        <div class="sample-picker">
+          <label id="sample-title" for="sample-picker"><i data-icon="book"></i>준비된 예시로 연습</label>
+          <div class="sample-actions">
+            <select id="sample-picker" aria-label="시연할 가상 사례"></select>
+            <button id="load-sample" type="button">예시 열기</button>
+          </div>
+          <button id="exit-sample" type="button" hidden>내 입력으로 돌아가기</button>
+        </div>
+        <form id="case-form" novalidate autocomplete="off">
+          <div class="field">
+            <label for="photo">현장 사진 <b class="required" aria-label="필수">*</b></label>
+            <p class="helper" id="photo-help">얼굴·명찰·화면 등 식별 정보가 가려진 공개 가능한 사진을 선택해 주세요.</p>
+            <div id="drop-zone" class="drop-zone">
+              <input type="file" id="photo" accept="image/jpeg,image/png" aria-required="true" aria-label="현장 사진 선택" aria-describedby="photo-help photo-error">
+              <label for="photo" id="photo-label" class="upload-label">
+                <span class="upload-icon"><i data-icon="upload"></i></span><strong>사진 선택 <span>또는 끌어놓기</span></strong><small>JPG, PNG · 1장</small>
+              </label>
+              <img id="photo-thumb" alt="선택한 현장 사진" hidden>
+            </div>
+            <div class="photo-actions" id="photo-actions" hidden><label for="photo">사진 교체</label><button type="button" id="remove-photo">삭제</button></div>
+            <p class="error-text" id="photo-error" role="alert" hidden></p>
+          </div>
+          <div class="fixed-fields">
+            <div><span class="field-name">제품</span><div class="fixed-value"><i data-icon="box"></i>녹취 제품<i data-icon="lock"></i></div></div>
+            <div><span class="field-name">업종</span><div class="fixed-value"><i data-icon="school"></i>교육<i data-icon="lock"></i></div></div>
+          </div>
+          <fieldset class="field"><legend>설치 형태 <b class="required" aria-label="필수">*</b></legend><div class="choices">
+            <label><input type="radio" name="install" value="new" required><span>신규 설치</span></label>
+            <label><input type="radio" name="install" value="addition"><span>추가 설치</span></label>
+            <label><input type="radio" name="install" value="replacement"><span>교체 설치</span></label>
+          </div></fieldset>
+          <div class="field"><label for="region">지역 <small>선택</small></label><input type="text" id="region" placeholder="예: 서울 강남구" maxlength="80" autocomplete="off"></div>
+          <div class="field"><label for="note">현장 메모 <small>선택</small></label><textarea id="note" rows="3" maxlength="1000" placeholder="상담 후 통화 내용을 다시 확인하는 상황을 소개하고 싶습니다." aria-describedby="memo-help"></textarea><p id="memo-help" class="helper">기관명, 이름, 전화번호, 상세 주소는 제외해 주세요.</p></div>
+          <div class="form-actions"><button id="generate" type="submit" class="button primary" disabled><i data-icon="sparkles"></i><span>초안 3종 만들기</span></button>
+          <button id="example" type="button" class="example-button" disabled><i data-icon="play"></i>예시 결과 보기</button></div>
+        </form>
+      </section>
+      <div class="right-column">
+        <section class="panel output-panel" aria-labelledby="output-title">
+          <header class="panel-head"><div class="head-icon"><i data-icon="layers"></i></div><h2 id="output-title">원고 작업대</h2><span class="status" id="status" role="status">입력 대기</span></header>
+          <div role="tablist" aria-label="콘텐츠 채널" class="tabs">
+            <button id="tab-blog" role="tab" aria-selected="true" aria-controls="channel-panel" data-tab="blog"><i data-icon="article"></i>네이버 블로그</button>
+            <button id="tab-card" role="tab" aria-selected="false" aria-controls="channel-panel" tabindex="-1" data-tab="card"><i data-icon="gallery"></i>갤러리 카드</button>
+            <button id="tab-sms" role="tab" aria-selected="false" aria-controls="channel-panel" tabindex="-1" data-tab="sms"><i data-icon="message"></i>문자</button>
+          </div>
+          <div id="generation-message" class="notice error" role="alert" hidden></div>
+          <div id="recovery-actions" class="recovery-actions" hidden>
+            <button id="error-example" type="button">예시 결과 보기</button>
+            <button id="retry" type="button">실시간 생성 재시도</button>
+          </div>
+          <div id="demo-notice" class="notice" hidden><i data-icon="info"></i><span><strong>예시 결과</strong> · 데모·제품 사실 미확인<span id="sample-caption"></span></span></div>
+          <div id="channel-panel" role="tabpanel" aria-labelledby="tab-blog" tabindex="0">
+            <div id="empty-preview" class="empty-preview">
+              <article class="sample-spread">
+                <div class="spread-copy">
+                  <p class="spread-kicker"><i data-icon="book"></i>예시 원고 <span>교육기관 · 상담</span></p>
+                  <h3>새 학기 상담 전화,<br>답을 기다리는 질문은<br><em>어디에 남길까요?</em></h3>
+                  <p class="spread-summary">첫 통화에서 바로 답하기 어려웠던 질문을 다음 상담까지 이어 가는 가상의 학교 이야기.</p>
+                  <button class="spread-action" id="quick-sample" type="button"><i data-icon="article"></i>이 예시로 시작</button>
+                </div>
+                <figure class="spread-photo"><img src="/samples/desk-phone.jpg" alt="다이얼식 탁상전화 자료 사진"><figcaption>시연용 자료 사진</figcaption></figure>
+              </article>
+              <div class="empty-hint"><i data-icon="info"></i><div><h3 id="empty-title">블로그 본문 미리보기</h3><p id="empty-detail">현장 정보를 입력하거나 위 예시로 작업을 시작하세요.</p></div></div>
+            </div>
+            <div id="rendered-preview" hidden>
+              <div id="blog-toolbar" class="blog-toolbar" hidden>
+                <label for="blog-view-mode"><i data-icon="layout"></i>원고 보기</label>
+                <select id="blog-view-mode"><option value="preview">서식 미리보기</option><option value="edit">본문 편집</option><option value="markdown">Markdown 원문</option></select>
+                <button id="copy-markdown" class="tool-button" type="button" disabled><i data-icon="copy"></i>Markdown 복사</button>
+              </div>
+              <article id="blog-preview" class="blog-paper" aria-label="네이버 블로그 원고 미리보기" hidden></article>
+              <div id="blog-edit" class="blog-paper blog-edit" hidden>
+                <h3>원고 편집</h3><p class="editor-note">문구를 바꾸면 이전 승인이 해제됩니다.</p>
+                <div id="blog-editor-fields"></div>
+                <div class="edit-actions"><button id="cancel-blog-edits" type="button" class="button secondary">취소</button><button id="save-blog-edits" type="button" class="button primary">수정 반영</button></div>
+              </div>
+              <pre id="blog-markdown" class="markdown-view" aria-label="Markdown 원문" hidden></pre>
+              <canvas id="card-canvas" width="1080" height="1080" role="img" aria-label="설치 사례 카드" hidden></canvas><pre id="text-preview" hidden></pre>
+            </div>
+          </div>
+          <div class="preview-footer"><span id="format-info"><i data-icon="frame"></i><span>1080 × 1080 px · PNG</span></span><button id="export" class="button export-button" type="button" aria-describedby="lock-reason" disabled><i data-icon="download"></i><span>PNG 저장</span></button></div>
+          <p id="export-feedback" class="export-feedback" role="status" hidden></p>
+        </section>
+        <section class="panel review-panel" aria-labelledby="review-title">
+          <header class="panel-head"><div class="head-icon"><i data-icon="shield"></i></div><h2 id="review-title">검토 및 승인</h2><span class="review-state" id="review-state"><i data-icon="lock"></i>승인 대기</span></header>
+          <div class="review-inner">
+            <div id="evidence-empty"><i data-icon="link"></i>초안을 생성하면 사용한 제품 문구와 출처가 표시됩니다.</div>
+            <section id="evidence" hidden aria-label="사용한 제품 근거"><strong id="fact-count"></strong><ul id="facts"></ul><p id="config-notes"></p></section>
+            <label class="check"><input id="check-copy" type="checkbox" disabled>문구와 근거를 확인했습니다.</label>
+            <label class="check"><input id="check-photo" type="checkbox" disabled>사진 공개 적합성을 확인했습니다.</label>
+            <div class="approval-row"><p id="lock-reason">검토 및 승인 후 내보낼 수 있습니다.</p><button id="approve" type="button" class="button approve-button" disabled>검토 완료·승인</button></div>
+          </div>
+        </section>
+        <section class="panel publish-panel" aria-labelledby="publish-title">
+          <div class="publish-inner">
+            <div class="publish-glyph" aria-hidden="true">N</div>
+            <div class="publish-copy"><h2 id="publish-title">네이버 블로그 발행</h2><p id="publish-detail">계정을 연결하고 원고를 승인하면 네이버로 보낼 수 있습니다.</p></div>
+            <span class="status" id="publish-state" role="status">연결 확인</span>
+          </div>
+          <div id="post-url-panel" class="settings-field" hidden><label for="post-url">발행한 게시물 주소 <small>선택</small></label><input type="url" id="post-url" placeholder="네이버에서 발행한 뒤 URL을 복사해 입력하세요."></div>
+          <div class="publish-actions"><button id="open-publish-connections" type="button" class="tool-button"><i data-icon="plug"></i>연결 설정</button><a id="published-link" hidden target="_blank" rel="noopener noreferrer">게시물 열기</a><button id="check-publication" type="button" class="tool-button" hidden><i data-icon="refresh"></i>발행 상태 확인</button><button id="publish-to-naver" type="button" class="button publish-button" disabled><i data-icon="send"></i>네이버로 보내기</button></div>
+        </section>
+      </div>
+    </div>
+    <footer class="page-footer"><i data-icon="lock"></i><span>새로고침하면 현재 입력과 원고가 초기화됩니다.</span><span id="timing"></span></footer>
+  </main>
+  <dialog id="connections" aria-labelledby="connections-title"><div class="dialog-header"><h2 id="connections-title">연결 설정</h2><button type="button" class="icon-button" id="close-connections" aria-label="연결 설정 닫기"><i data-icon="close"></i></button></div>
+    <div class="connection-content">
+      <ul class="integration-list" aria-label="연결 상태"><li><span>AI 모델</span><strong id="ai-state">확인 중</strong></li><li><span>네이버 MCP</span><strong id="mcp-state">확인 중</strong></li><li><span>발행 계정</span><strong id="account-state">확인 중</strong></li></ul>
+      <form id="settings-form" autocomplete="off">
+        <div class="settings-field"><label for="api-key">OpenAI API 키</label><input type="password" id="api-key" autocomplete="new-password" placeholder="sk-…" spellcheck="false"><small>새 키를 입력할 때만 변경합니다.</small></div>
+        <div class="settings-pair"><div class="settings-field"><label for="model-name">생성 모델</label><input type="text" id="model-name" placeholder="서버 기본값" spellcheck="false"></div>
+        <div class="settings-field"><label for="blog-id">네이버 블로그 ID</label><input type="text" id="blog-id" placeholder="블로그 주소의 아이디" spellcheck="false"></div></div>
+        <details id="setup-facts" class="setup-facts"><summary>제품 근거와 상담 안내</summary><div>
+          <div class="settings-field"><label for="fact-text">확인한 제품 문구</label><textarea id="fact-text" rows="2" placeholder="제품 원문에서 확인한 표현을 입력하세요."></textarea></div>
+          <div class="settings-pair"><div class="settings-field"><label for="fact-source">원문 출처</label><input type="text" id="fact-source" placeholder="문서명·쪽수 또는 원문 URL"></div><div class="settings-field"><label for="fact-reviewer">확인 담당자</label><input type="text" id="fact-reviewer"></div></div>
+          <div class="settings-field"><label for="cta-text">확인한 상담 안내 문구</label><textarea id="cta-text" rows="2"></textarea></div>
+          <label class="check"><input type="checkbox" id="confirm-fact">입력한 문구를 원문과 대조했습니다.</label>
+        </div></details>
+        <button id="save-connections" type="submit" class="button primary">설정 저장</button>
+      </form>
+      <div class="connection-tools"><button id="login-naver" class="button secondary" type="button"><i data-icon="login"></i>네이버 로그인 열기</button><button id="refresh-connections" type="button" class="tool-button"><i data-icon="refresh"></i>상태 다시 확인</button></div>
+      <div class="rehearsal"><button id="start-rehearsal" type="button" class="button secondary"><i data-icon="article"></i>내 블로그용 테스트 원고 열기</button><p>CC0 자료 사진과 연동 테스트 표시를 넣은 글을 검토한 뒤 내 블로그로 전송합니다.</p></div>
+      <p id="connection-feedback" class="connection-feedback" role="status"></p>
+    </div>
+  </dialog>
+  <dialog id="publish-confirm" aria-labelledby="confirm-heading">
+    <div class="dialog-header"><h2 id="confirm-heading">네이버로 원고 보내기</h2></div>
+    <div class="confirm-content"><dl><dt>대상 블로그</dt><dd id="confirm-target"></dd><dt>글 제목</dt><dd id="confirm-title"></dd></dl>
+      <p id="confirm-delivery-note">검토한 제목, 본문, 사진을 위 블로그로 전송합니다. 연결 방식에 따라 네이버 편집기에서 공개 범위를 최종 확인하거나, 선택한 계정에 바로 발행됩니다.</p>
+      <div class="edit-actions"><button type="button" id="cancel-send" class="button secondary">취소</button><button type="button" id="confirm-send" class="button primary">이 원고 보내기</button></div>
+    </div>
+  </dialog>
+  <dialog id="guide" aria-labelledby="guide-title"><div class="dialog-header"><h2 id="guide-title">이용 안내</h2><button type="button" class="icon-button" id="close-guide" aria-label="이용 안내 닫기"><i data-icon="close"></i></button></div>
+    <ol><li><strong>현장 브리프 준비</strong><p>익명화한 사진과 설치 정보를 입력하세요. 예시는 API 키 없이 열 수 있습니다.</p></li>
+    <li><strong>원고 편집</strong><p>생성한 글을 서식 미리보기에서 확인하고, 필요한 문장을 다듬으세요. 카드·문자도 같은 사례에서 확인할 수 있습니다.</p></li>
+    <li><strong>검토 및 발행</strong><p>원문 근거와 사진을 확인해 승인한 뒤, 연결한 네이버 계정으로 보내세요. 예시 원고는 워터마크가 있는 결과로 가져갈 수 있습니다.</p></li></ol>
+    <button id="guide-done" type="button" class="button primary">확인</button>
+  </dialog>
+</body>
+</html>

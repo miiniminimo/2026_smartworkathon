@@ -42,7 +42,7 @@ def load_pages(files, folder):
 st.header("① 제품 자료에서 근거 있는 차별점 뽑기")
 c1, c2 = st.columns([2, 1])
 files = c1.file_uploader("제안서·매뉴얼·가이드라인 (PPTX·PDF·XLSX)", type=["pptx", "pdf", "xlsx", "txt", "md"], accept_multiple_files=True)
-folder = c2.text_input("또는 자료 폴더 경로 (로컬 실행 시)")
+folder = c2.text_input("또는 자료 폴더 경로 (로컬 실행 시)", os.environ.get("DOCS_DIR", ""))
 if st.button("차별점 분석", type="primary"):
     pages = load_pages(files, folder)
     if not pages:
@@ -50,15 +50,15 @@ if st.button("차별점 분석", type="primary"):
         st.stop()
     with st.spinner(f"자료 {len({p['doc'] for p in pages})}개 · {len(pages)}쪽 분석 중…"):
         t = time.time()
-        ss.items, ss.pages, ss.t1 = analyze_differentiators(pages, model), pages, time.time() - t
+        ss.diffs, ss.pages, ss.t1 = analyze_differentiators(pages, model), pages, time.time() - t
     for k in ("content", "report", "history"):
         ss.pop(k, None)
 
-if "items" in ss:
-    ok = sum(i["근거확인"] for i in ss.items)
-    st.success(f"차별점 {len(ss.items)}개 중 원문 인용 확인 {ok}개 · {ss.t1:.0f}초 — 확인 안 된 항목은 원고에 쓰지 않습니다.")
+if "diffs" in ss:
+    ok = sum(i["근거확인"] for i in ss.diffs)
+    st.success(f"차별점 {len(ss.diffs)}개 중 원문 인용 확인 {ok}개 · {ss.t1:.0f}초 — 확인 안 된 항목은 원고에 쓰지 않습니다.")
     rows = []
-    for it in ss.items:
+    for it in ss.diffs:
         ev = (it.get("근거") or [{}])[0]
         rows.append({"인용 확인": "✅" if it["근거확인"] else "❌ 제외", "차별점": it.get("차별점"), "고객 혜택": it.get("고객혜택"),
                      "근거": f"{ev.get('문서', '')} {ev.get('쪽', '')}쪽" + (" (쪽 바로잡음)" if ev.get("쪽수정") else ""),
@@ -77,7 +77,7 @@ if st.button("원고 생성", type="primary", disabled="items" not in ss):
         st.stop()
     with st.spinner("사진 장면 읽고 원고 쓰는 중…"):
         t = time.time()
-        ss.content = generate_content(imgs, ss.items, model, customer=customer, pages=ss.pages)
+        ss.content = generate_content(imgs, ss.diffs, model, customer=customer, pages=ss.pages)
     ss.imgs, ss.t2 = imgs, time.time() - t
     ss.title, ss.body = ss.content.get("title", ""), ss.content.get("body", "")
     ss.history = []
@@ -101,9 +101,9 @@ def render_blog(title, body, imgs):
     st.markdown("\n".join(buf))
 
 
-if "content" in ss:
+if "content" in ss and ss.get("imgs"):  # 붙여넣은 원고(사진 없음)는 ③에서만 보여 준다
     c = ss.content
-    st.success(f"원고 생성 {ss.t2:.0f}초 · 본문 {len(ss.body):,}자")
+    st.success(f"원고 생성 {ss.get('t2', 0):.0f}초 · 본문 {len(ss.body):,}자")
     cols = st.columns(len(ss.imgs))
     for i, (col, img) in enumerate(zip(cols, ss.imgs), 1):
         col.image(img)
@@ -137,7 +137,7 @@ with st.expander("다른 원고 검수 — 대행사·체험단·일반 AI가 �
     p_body = st.text_area("본문", height=200)
     if st.button("붙여넣은 원고 검수", disabled=not p_body.strip()):
         ss.title, ss.body, ss.history = p_title, p_body, []
-        ss.setdefault("imgs", [])
+        ss.imgs = []
         ss.setdefault("content", {"cards": []})
         with st.spinner("17개 항목 검사 중…"):
             run_check()
